@@ -1,0 +1,1739 @@
+basePath: /
+definitions:
+  application.ApplicationResponse:
+    properties:
+      attachment_urls:
+        items:
+          type: string
+        type: array
+      bounty_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      proposal:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  application.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  application.SubmitApplicationRequest:
+    properties:
+      attachments:
+        items:
+          type: string
+        type: array
+      bounty_id:
+        type: string
+      proposal:
+        type: string
+    required:
+    - bounty_id
+    - proposal
+    type: object
+  attachment.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  attachment.UploadAttachmentResponse:
+    properties:
+      file_url:
+        type: string
+      message:
+        type: string
+    type: object
+  bounty.BountyResponse:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: string
+      currency:
+        type: string
+      deadline:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      priority:
+        type: string
+      reward:
+        type: number
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  bounty.CreateBountyRequest:
+    properties:
+      category:
+        type: string
+      currency:
+        type: string
+      deadline:
+        description: RFC3339
+        type: string
+      description:
+        type: string
+      priority:
+        type: string
+      reward:
+        type: number
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    required:
+    - currency
+    - description
+    - reward
+    - title
+    type: object
+  bounty.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  bounty.UpdateBountyRequest:
+    properties:
+      category:
+        type: string
+      currency:
+        type: string
+      deadline:
+        description: RFC3339
+        type: string
+      description:
+        type: string
+      priority:
+        type: string
+      reward:
+        type: number
+      status:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    type: object
+  comment.AddCommentRequest:
+    properties:
+      attachments:
+        items:
+          type: string
+        type: array
+      bounty_id:
+        type: string
+      content:
+        type: string
+      parent_id:
+        description: 如果是回复，此字段为父评论 ID（UUID）
+        type: string
+    required:
+    - bounty_id
+    - content
+    type: object
+  comment.CommentResponse:
+    properties:
+      attachments:
+        items:
+          type: string
+        type: array
+      bounty_id:
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      parent_id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  comment.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  comment.UpdateCommentRequest:
+    properties:
+      attachments:
+        items:
+          type: string
+        type: array
+      content:
+        type: string
+    type: object
+  invitation.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  invitation.InvitationResponse:
+    properties:
+      created_at:
+        type: string
+      expires_at:
+        type: string
+      id:
+        type: string
+      invitee_id:
+        type: string
+      inviter_id:
+        type: string
+      message:
+        type: string
+      status:
+        type: string
+      team_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  invitation.RespondInvitationRequest:
+    properties:
+      response_message:
+        type: string
+      status:
+        enum:
+        - accepted
+        - rejected
+        type: string
+    required:
+    - status
+    type: object
+  invitation.SendInvitationRequest:
+    properties:
+      expires_at:
+        description: RFC3339
+        type: string
+      invitee_id:
+        type: string
+      message:
+        type: string
+      team_id:
+        type: string
+    required:
+    - invitee_id
+    - team_id
+    type: object
+  like.CountResponse:
+    properties:
+      count:
+        type: integer
+    type: object
+  like.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  like.LikeRequest:
+    properties:
+      target_id:
+        description: 目标实体 ID
+        type: string
+      target_type:
+        description: 如 "bounty", "comment", "user"
+        type: string
+    required:
+    - target_id
+    - target_type
+    type: object
+  notification.CountResponse:
+    properties:
+      count:
+        type: integer
+    type: object
+  notification.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  notification.NotificationResponse:
+    properties:
+      actor_id:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      is_read:
+        type: boolean
+      metadata:
+        additionalProperties: true
+        type: object
+      related_id:
+        type: string
+      related_type:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  team.AddMemberRequest:
+    properties:
+      user_id:
+        type: string
+    required:
+    - user_id
+    type: object
+  team.CreateTeamRequest:
+    properties:
+      description:
+        type: string
+      member_ids:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  team.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  team.MemberResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      profile_picture:
+        type: string
+      username:
+        type: string
+    type: object
+  team.TeamResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      member_ids:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      owner_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  team.UpdateTeamRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  user.AuthResponse:
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/user.UserResponse'
+    type: object
+  user.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  user.LoginRequest:
+    properties:
+      identifier:
+        description: 用户名或邮箱
+        type: string
+      password:
+        type: string
+    required:
+    - identifier
+    - password
+    type: object
+  user.LogoutResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  user.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  user.UpdateProfileRequest:
+    properties:
+      preferred_language:
+        type: string
+      profile_picture_url:
+        type: string
+      timezone:
+        type: string
+      username:
+        type: string
+    type: object
+  user.UserProfileResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      preferred_language:
+        type: string
+      profile_picture:
+        type: string
+      timezone:
+        type: string
+      username:
+        type: string
+      verified:
+        type: boolean
+    type: object
+  user.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is the API for OnePenny server.
+  title: OnePenny API
+  version: "1.0"
+paths:
+  /api/applications:
+    get:
+      description: 分页获取当前登录用户提交的所有赏金申请
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 申请列表
+          schema:
+            items:
+              $ref: '#/definitions/application.ApplicationResponse'
+            type: array
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 列出当前用户的赏金申请
+      tags:
+      - application
+    post:
+      consumes:
+      - application/json
+      description: 登录用户向指定赏金任务提交申请
+      parameters:
+      - description: 申请信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/application.SubmitApplicationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 申请提交成功
+          schema:
+            $ref: '#/definitions/application.ApplicationResponse'
+        "400":
+          description: 参数格式错误
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 提交赏金申请
+      tags:
+      - application
+  /api/applications/{id}:
+    delete:
+      description: 根据申请 ID 删除当前用户的赏金申请
+      parameters:
+      - description: 申请 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: 无效的申请 ID
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 删除赏金申请
+      tags:
+      - application
+    get:
+      description: 根据申请 ID 查询单个申请信息
+      parameters:
+      - description: 申请 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/application.ApplicationResponse'
+        "400":
+          description: 无效的申请 ID
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+        "404":
+          description: 申请不存在
+          schema:
+            $ref: '#/definitions/application.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 获取赏金申请详情
+      tags:
+      - application
+  /api/bounties:
+    get:
+      description: 分页获取赏金任务列表
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/bounty.BountyResponse'
+            type: array
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 列出赏金任务
+      tags:
+      - bounty
+    post:
+      consumes:
+      - application/json
+      description: 登录用户创建新的赏金任务
+      parameters:
+      - description: 赏金任务信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/bounty.CreateBountyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/bounty.BountyResponse'
+        "400":
+          description: 参数格式错误
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 创建赏金任务
+      tags:
+      - bounty
+  /api/bounties/{id}:
+    delete:
+      description: 根据 ID 删除赏金任务
+      parameters:
+      - description: 赏金任务 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: 无效的 ID
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 删除赏金任务
+      tags:
+      - bounty
+    get:
+      description: 根据 ID 获取单个赏金任务的详细信息
+      parameters:
+      - description: 赏金任务 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bounty.BountyResponse'
+        "400":
+          description: 无效的 ID
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+        "404":
+          description: 未找到赏金任务
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 获取赏金任务详情
+      tags:
+      - bounty
+    put:
+      consumes:
+      - application/json
+      description: 根据 ID 更新赏金任务的字段
+      parameters:
+      - description: 赏金任务 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 要更新的字段
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/bounty.UpdateBountyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bounty.BountyResponse'
+        "400":
+          description: 参数格式错误或无效的 ID
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/bounty.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 更新赏金任务
+      tags:
+      - bounty
+  /api/comments:
+    post:
+      consumes:
+      - application/json
+      description: 登录用户对指定赏金任务发表评论，或对已有评论进行回复
+      parameters:
+      - description: 评论或回复请求
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/comment.AddCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 创建成功，返回新评论
+          schema:
+            $ref: '#/definitions/comment.CommentResponse'
+        "400":
+          description: 参数格式错误
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 发表评论或回复
+      tags:
+      - comment
+  /api/comments/{id}:
+    delete:
+      description: 根据评论 ID 删除评论
+      parameters:
+      - description: 评论 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: 无效的评论 ID
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 删除评论
+      tags:
+      - comment
+    put:
+      consumes:
+      - application/json
+      description: 根据评论 ID 更新评论内容或附件
+      parameters:
+      - description: 评论 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 更新内容
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/comment.UpdateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新后的评论
+          schema:
+            $ref: '#/definitions/comment.CommentResponse'
+        "400":
+          description: 无效的参数
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 更新评论
+      tags:
+      - comment
+  /api/comments/{id}/replies:
+    get:
+      description: 根据父评论 ID 分页获取该评论的所有回复
+      parameters:
+      - description: 父评论 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 回复列表
+          schema:
+            items:
+              $ref: '#/definitions/comment.CommentResponse'
+            type: array
+        "400":
+          description: 无效的参数
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 获取评论回复列表
+      tags:
+      - comment
+  /api/comments/bounty/{bountyId}:
+    get:
+      description: 根据赏金任务 ID 分页获取该任务下的所有评论
+      parameters:
+      - description: 赏金任务 ID
+        in: path
+        name: bountyId
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 评论列表
+          schema:
+            items:
+              $ref: '#/definitions/comment.CommentResponse'
+            type: array
+        "400":
+          description: 无效的参数
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/comment.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 获取赏金任务的评论列表
+      tags:
+      - comment
+  /api/invitations:
+    get:
+      description: 分页获取当前用户收到的所有组队邀请
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 邀请列表
+          schema:
+            items:
+              $ref: '#/definitions/invitation.InvitationResponse'
+            type: array
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 获取我的邀请列表
+      tags:
+      - invitation
+    post:
+      consumes:
+      - application/json
+      description: 登录用户向指定用户发送组队邀请
+      parameters:
+      - description: 邀请信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/invitation.SendInvitationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 创建成功，返回邀请详情
+          schema:
+            $ref: '#/definitions/invitation.InvitationResponse'
+        "400":
+          description: 参数格式错误
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 发送组队邀请
+      tags:
+      - invitation
+  /api/invitations/{id}:
+    delete:
+      description: 发起者取消之前发送的组队邀请
+      parameters:
+      - description: 邀请 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: 无效邀请 ID
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+        "404":
+          description: 邀请不存在
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 取消组队邀请
+      tags:
+      - invitation
+  /api/invitations/{id}/respond:
+    put:
+      consumes:
+      - application/json
+      description: 被邀请者接受或拒绝指定的组队邀请
+      parameters:
+      - description: 邀请 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 响应信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/invitation.RespondInvitationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 操作成功，返回更新后的邀请状态
+          schema:
+            $ref: '#/definitions/invitation.InvitationResponse'
+        "400":
+          description: 请求参数错误或无法响应
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+        "404":
+          description: 邀请不存在
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/invitation.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 响应组队邀请
+      tags:
+      - invitation
+  /api/likes:
+    delete:
+      consumes:
+      - application/json
+      description: 登录用户对指定实体执行取消点赞操作
+      parameters:
+      - description: 取消点赞请求体
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/like.LikeRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: 参数格式错误或未点赞
+          schema:
+            $ref: '#/definitions/like.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/like.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/like.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 取消点赞
+      tags:
+      - like
+    post:
+      consumes:
+      - application/json
+      description: 登录用户对指定实体（悬赏、评论、用户等）执行点赞操作
+      parameters:
+      - description: 点赞请求体
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/like.LikeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: 参数格式错误或已点赞
+          schema:
+            $ref: '#/definitions/like.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/like.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/like.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 点赞目标
+      tags:
+      - like
+  /api/likes/count:
+    get:
+      description: 获取指定实体的点赞总数
+      parameters:
+      - description: 目标实体 ID
+        in: query
+        name: target_id
+        required: true
+        type: string
+      - description: 目标实体类型，如 bounty, comment, user
+        in: query
+        name: target_type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 返回点赞总数
+          schema:
+            $ref: '#/definitions/like.CountResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/like.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/like.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 获取点赞数
+      tags:
+      - like
+  /api/notifications:
+    get:
+      description: 分页获取当前用户的通知，按时间倒序
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 通知列表
+          schema:
+            items:
+              $ref: '#/definitions/notification.NotificationResponse'
+            type: array
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 列出通知
+      tags:
+      - notification
+  /api/notifications/{id}/read:
+    put:
+      description: 标记指定 ID 的通知为已读
+      parameters:
+      - description: 通知 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: 无效通知 ID
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标记单条通知为已读
+      tags:
+      - notification
+  /api/notifications/count:
+    get:
+      description: 获取当前用户的未读通知总数
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 未读数
+          schema:
+            $ref: '#/definitions/notification.CountResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 未读通知计数
+      tags:
+      - notification
+  /api/notifications/read:
+    put:
+      description: 标记当前用户的所有通知为已读
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/notification.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 标记所有通知为已读
+      tags:
+      - notification
+  /api/teams:
+    get:
+      description: 登录用户分页获取自己创建的团队列表
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 团队列表
+          schema:
+            items:
+              $ref: '#/definitions/team.TeamResponse'
+            type: array
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 列出我的团队
+      tags:
+      - team
+    post:
+      consumes:
+      - application/json
+      description: 登录用户创建新团队，可设置成员
+      parameters:
+      - description: 团队信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/team.CreateTeamRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 创建成功
+          schema:
+            $ref: '#/definitions/team.TeamResponse'
+        "400":
+          description: 参数格式错误
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 新建团队
+      tags:
+      - team
+  /api/teams/{id}:
+    delete:
+      parameters:
+      - description: 团队 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 删除团队
+      tags:
+      - team
+    get:
+      description: 根据团队 ID 查询对应详情
+      parameters:
+      - description: 团队 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 团队详情
+          schema:
+            $ref: '#/definitions/team.TeamResponse'
+        "400":
+          description: 无效团队 ID
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "404":
+          description: 团队不存在
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 获取团队详情
+      tags:
+      - team
+    put:
+      consumes:
+      - application/json
+      description: 根据 ID 修改团队名称或描述
+      parameters:
+      - description: 团队 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 更新信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/team.UpdateTeamRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/team.TeamResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 更新团队信息
+      tags:
+      - team
+  /api/teams/{id}/members:
+    get:
+      description: 根据团队 ID 获取该团队所有成员（分页）
+      parameters:
+      - description: 团队 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成员列表
+          schema:
+            items:
+              $ref: '#/definitions/team.MemberResponse'
+            type: array
+        "400":
+          description: 无效参数
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 列出团队成员
+      tags:
+      - team
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 团队 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 成员信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/team.AddMemberRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 添加团队成员
+      tags:
+      - team
+  /api/teams/{id}/members/{userId}:
+    delete:
+      parameters:
+      - description: 团队 ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 用户 ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/team.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 移除团队成员
+      tags:
+      - team
+  /api/users/login:
+    post:
+      consumes:
+      - application/json
+      description: 使用用户名或邮箱 + 密码进行登录，成功返回 JWT
+      parameters:
+      - description: 登录信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功，返回用户信息和 Token
+          schema:
+            $ref: '#/definitions/user.AuthResponse'
+        "400":
+          description: 参数格式错误
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "401":
+          description: 用户名或密码错误
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+      summary: 用户登录
+      tags:
+      - auth
+      - user
+  /api/users/logout:
+    post:
+      description: 前端丢弃当前 JWT 即可完成登出
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登出成功
+          schema:
+            $ref: '#/definitions/user.LogoutResponse'
+      summary: 用户登出
+      tags:
+      - auth
+      - user
+  /api/users/profile:
+    get:
+      description: 获取当前登录用户的全部公开信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserProfileResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "404":
+          description: 用户不存在
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 获取当前登录用户信息
+      tags:
+      - user
+      - profile
+    put:
+      consumes:
+      - application/json
+      description: 更新当前登录用户的用户名、头像、时区或语言偏好
+      parameters:
+      - description: 要更新的用户信息字段
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserProfileResponse'
+        "400":
+          description: 参数格式错误
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: 更新当前登录用户信息
+      tags:
+      - user
+      - profile
+  /api/users/register:
+    post:
+      consumes:
+      - application/json
+      description: 新建用户并返回认证 Token
+      parameters:
+      - description: 注册信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/user.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.AuthResponse'
+        "400":
+          description: 参数格式错误
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "409":
+          description: 用户名或邮箱已存在
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+      summary: 用户注册
+      tags:
+      - auth
+      - user
+  /attachment:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 接收 form-data 中的 file 字段，保存文件并返回可访问的 URL
+      parameters:
+      - description: 要上传的文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 上传成功
+          schema:
+            $ref: '#/definitions/attachment.UploadAttachmentResponse'
+        "400":
+          description: 请求中没有文件或参数错误
+          schema:
+            $ref: '#/definitions/attachment.ErrorResponse'
+        "500":
+          description: 服务器内部错误，文件保存失败
+          schema:
+            $ref: '#/definitions/attachment.ErrorResponse'
+      summary: 上传单个文件
+      tags:
+      - attachment
+swagger: "2.0"
