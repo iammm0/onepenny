@@ -1,6 +1,7 @@
 # OnePenny Server
 
 [![version](https://img.shields.io/badge/version-v0.1.0-blue.svg)](https://github.com/iammm0/geekreward-server/releases/tag/v0.1.0)
+[![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/License-PolyForm_Noncommercial_1.0.0-blue.svg)](LICENSE.md)
 
 OnePenny Server 是一个以 Go 为核心、Gin 框架驱动的后端 API 服务，提供悬赏（Bounty）平台的完整功能，包括用户认证、发布赏金、提交申请、团队邀请、通知、评论、点赞、团队管理等。内置 PostgreSQL（GORM）和 Redis 支持，并自动生成 Swagger API 文档。
 
