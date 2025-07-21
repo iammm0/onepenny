@@ -5,7 +5,6 @@ go 1.23.0
 toolchain go1.23.10
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.10.1
@@ -55,6 +54,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.27.0 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.3 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.5.5 // indirect

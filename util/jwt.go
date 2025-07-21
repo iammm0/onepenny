@@ -2,58 +2,73 @@ package util
 
 import (
 	"errors"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/google/uuid"
+	"os"
 	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 )
 
-// jwtSecret 是用于签名JWT的密钥。为了安全起见，应该从配置或环境变量中获取。
-var jwtSecret = []byte("ToGoOrNotToGo,ItIsAQuestion.") // 替换为你自己的密钥
+// 从环境变量读取签名密钥，推荐在程序启动时就加载好
+var jwtSecret []byte
 
-// GenerateJWT 生成一个新的JWT，用于用户认证
-func GenerateJWT(userID uuid.UUID) (string, error) {
-	// 创建一个新的JWT令牌，使用HS256签名方法
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": userID.String(),                       // 在令牌中存储用户ID为字符串
-		"exp":     time.Now().Add(time.Hour * 72).Unix(), // 设置令牌的过期时间为72小时后
-	})
-
-	// 使用密钥对令牌进行签名并生成字符串形式的令牌
-	tokenString, err := token.SignedString(jwtSecret)
-	if err != nil {
-		return "", err
+func init() {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		// 为了示例，这里提供了默认值。生产环境请务必通过 env 注入强随机密钥！
+		secret = "ToGoOrNotToGo,ItIsAQuestion."
 	}
-
-	return tokenString, nil
+	jwtSecret = []byte(secret)
 }
 
-// ValidateJWT 验证JWT，并返回令牌中的用户ID
+// CustomClaims 定义了我们要在 JWT 中携带的自定义字段
+type CustomClaims struct {
+	UserID string `json:"user_id"`
+	jwt.RegisteredClaims
+}
+
+// GenerateJWT 为指定的 userID 生成一个签名好的 tokenString
+func GenerateJWT(userID uuid.UUID) (string, error) {
+	claims := CustomClaims{
+		UserID: userID.String(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			// 设置过期时间：72 小时后
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(72 * time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			// 你还可以设置 Issuer、Subject、NotBefore 等字段
+			//Issuer:    "my-app",
+			//Subject:   userID.String(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtSecret)
+}
+
+// ValidateJWT 解析并验证 tokenString，返回其中的 userID
 func ValidateJWT(tokenString string) (uuid.UUID, error) {
-	// 解析并验证令牌
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// 确认签名方法是否为HMAC
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+	// 解析 token 时，指定要使用的 CustomClaims 类型
+	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		// 强校验签名算法
+		if token.Method != jwt.SigningMethodHS256 {
 			return nil, errors.New("unexpected signing method")
 		}
 		return jwtSecret, nil
 	})
-
 	if err != nil {
 		return uuid.Nil, err
 	}
 
-	// 提取令牌中的用户ID
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		userIDStr, ok := claims["user_id"].(string)
-		if !ok {
-			return uuid.Nil, errors.New("invalid token claims")
-		}
-		userID, err := uuid.Parse(userIDStr)
-		if err != nil {
-			return uuid.Nil, err
-		}
-		return userID, nil
+	// 校验通过后，类型断言出 CustomClaims
+	claims, ok := token.Claims.(*CustomClaims)
+	if !ok || !token.Valid {
+		return uuid.Nil, errors.New("invalid token claims")
 	}
 
-	return uuid.Nil, errors.New("invalid token")
+	// 解析出 UUID
+	uid, err := uuid.Parse(claims.UserID)
+	if err != nil {
+		return uuid.Nil, err
+	}
+	return uid, nil
 }
