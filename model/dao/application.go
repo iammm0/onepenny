@@ -23,6 +23,7 @@ type Application struct {
 	Proposal       string            `gorm:"type:text"`                // 申请说明/方案
 	Status         ApplicationStatus `gorm:"type:varchar(20);default:'pending';index"`
 	AttachmentURLs pq.StringArray    `gorm:"type:text[]"` // 附件 URL 列表
+	Reason         *string           `gorm:"type:text"`
 
 	// 关联预加载
 	User   User   `gorm:"foreignKey:UserID;references:ID"`
