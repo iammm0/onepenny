@@ -66,6 +66,8 @@ func SetupRouter(
 			bs.GET("/:id", bountyController.Get)
 			bs.PUT("/:id", bountyController.Update)
 			bs.DELETE("/:id", bountyController.Delete)
+			bs.POST("/:id/request-settlement", bountyController.RequestSettlement)
+			bs.POST("/:id/confirm-settlement", bountyController.ConfirmSettlement)
 		}
 
 		// 应用
