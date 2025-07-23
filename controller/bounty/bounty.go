@@ -333,3 +333,64 @@ func (ctl *BountyController) Delete(c *gin.Context) {
 
 	c.Status(http.StatusNoContent)
 }
+
+// RequestSettlement godoc
+// @Summary     发起结算申请
+// @Description 接收者完成任务后，可向发布者发起结算请求
+// @Tags        bounty
+// @Security    BearerAuth
+// @Produce     json
+// @Param       bounty_id path string true "悬赏令 ID"
+// @Success     200 {object} dao.Bounty
+// @Failure     400 {object} ErrorResponse
+// @Failure     401 {object} ErrorResponse
+// @Failure     403 {object} ErrorResponse
+// @Failure     500 {object} ErrorResponse
+// @Router      /api/bounties/{bounty_id}/request-settlement [post]
+func (ctl *BountyController) RequestSettlement(c *gin.Context) {
+	raw, _ := c.Get("userID")
+	userID := raw.(uuid.UUID)
+
+	bID, err := uuid.Parse(c.Param("bounty_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid bounty_id"})
+		return
+	}
+	b, err := ctl.svc.RequestSettlement(bID, userID)
+	if err != nil {
+		// 这里可根据 err 类型返回 403、400 或 500
+		c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, b)
+}
+
+// ConfirmSettlement godoc
+// @Summary     确认结算
+// @Description 发布者对某个待结算悬赏令进行确认结算
+// @Tags        bounty
+// @Security    BearerAuth
+// @Produce     json
+// @Param       bounty_id path string true "悬赏令 ID"
+// @Success     200 {object} dao.Bounty
+// @Failure     400 {object} ErrorResponse
+// @Failure     401 {object} ErrorResponse
+// @Failure     403 {object} ErrorResponse
+// @Failure     500 {object} ErrorResponse
+// @Router      /api/bounties/{bounty_id}/confirm-settlement [post]
+func (ctl *BountyController) ConfirmSettlement(c *gin.Context) {
+	raw, _ := c.Get("userID")
+	userID := raw.(uuid.UUID)
+
+	bID, err := uuid.Parse(c.Param("bounty_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid bounty_id"})
+		return
+	}
+	b, err := ctl.svc.ConfirmSettlement(bID, userID)
+	if err != nil {
+		c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, b)
+}
