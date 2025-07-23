@@ -17,8 +17,10 @@ const (
 	BountyStatusInProgress BountyStatus = "in_progress"
 	// BountyStatusCompleted 任务已完成
 	BountyStatusCompleted BountyStatus = "completed"
-	// BountyStatusCancelled 任务已取消
-	BountyStatusCancelled BountyStatus = "cancelled"
+	// BountyStatusPendingSettlement 任务待结算
+	BountyStatusPendingSettlement BountyStatus = "PendingSettlement"
+	// BountyStatusSettled 任务完成
+	BountyStatusSettled BountyStatus = "cancelled"
 )
 
 // Bounty 是一个通用的「赏金任务」模型
