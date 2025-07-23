@@ -17,6 +17,9 @@ func Migrate(db *gorm.DB) error {
 		// 基础悬赏令表  为用户对象所拥有或申请
 		&dao.Bounty{},
 
+		// 悬赏令统计模型
+		&dao.BountyView{},
+
 		// 连接用户与悬赏令交互的申请与通知模型
 		&dao.Application{},
 		&dao.Notification{},

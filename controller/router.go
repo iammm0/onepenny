@@ -26,6 +26,7 @@ func SetupRouter(
 	likeController *likeCtrl.LikeController,
 	teamController *teamCtrl.TeamController,
 	attachmentController *attachmentCtrl.AttachmentController,
+	statsController *userCtrl.UserStatsController,
 ) *gin.Engine {
 	r := gin.Default()
 
@@ -124,6 +125,31 @@ func SetupRouter(
 			teams.DELETE("/:id/members/:userId", teamController.RemoveMember)
 			teams.GET("/:id/members", teamController.ListMembers)
 		}
+
+		// 用户数据统计
+		// 按状态查看自己发布的悬赏
+		protected.GET("/user/bounties/status", statsController.ListMyBountiesByStatus)
+		// 查看自己发布的某个悬赏收到的申请
+		protected.GET("/user/bounties/:bounty_id/applications", statsController.GetApplicationsForMyBounty)
+
+		// 统计总赏金
+		protected.GET("/user/stats/total-earned", statsController.GetTotalEarned)
+		// 列出已点赞的悬赏
+		protected.GET("/user/stats/liked-bounties", statsController.ListLikedBounties)
+		// 列出已浏览的悬赏
+		protected.GET("/user/stats/viewed-bounties", statsController.ListViewedBounties)
+
+		// 统计申请总数
+		protected.GET("/user/stats/applications/count", statsController.CountApplications)
+		// 统计评论总数
+		protected.GET("/user/stats/comments/count", statsController.CountComments)
+		// 平均完成时长（秒）
+		protected.GET("/user/stats/completion-time", statsController.AvgCompletionTime)
+
+		// 按类别统计任务数量
+		protected.GET("/user/stats/tasks/by-category", statsController.TaskCountByCategory)
+		// 按难度统计任务数量
+		protected.GET("/user/stats/tasks/by-difficulty", statsController.TaskCountByDifficulty)
 	}
 
 	return r
