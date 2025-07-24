@@ -4,10 +4,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
+	"onepenny-server/internal/repository"
 	"onepenny-server/internal/service"
 	"strconv"
 	"time"
 )
+
+// 判定请求体
+type decisionRequest struct {
+	Reason string `json:"reason" binding:"required"`
+}
 
 // ApplicationController 提供赏金申请相关的 HTTP 接口
 type ApplicationController struct {
@@ -226,4 +232,100 @@ func (ctl *ApplicationController) Delete(c *gin.Context) {
 		return
 	}
 	c.Status(http.StatusNoContent)
+}
+
+// Approve godoc
+// @Summary     批准申请
+// @Description 发布方批准某个申请，并说明理由，悬赏令进入进行中状态
+// @Tags        application
+// @Security    BearerAuth
+// @Accept      json
+// @Produce     json
+// @Param       application_id path     string          true  "申请 ID"
+// @Param       req            body     decisionRequest true  "批准理由"
+// @Success     200            {object} service.ApplicationDTO
+// @Failure     400            {object} ErrorResponse
+// @Failure     401            {object} ErrorResponse
+// @Failure     403            {object} ErrorResponse   "无权限"
+// @Failure     500            {object} ErrorResponse
+// @Router      /api/applications/{application_id}/approve [put]
+func (ctl *ApplicationController) Approve(c *gin.Context) {
+	raw, _ := c.Get("userID")
+	ownerID := raw.(uuid.UUID)
+
+	appID, err := uuid.Parse(c.Param("application_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "invalid application_id"})
+		return
+	}
+
+	var req decisionRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: err.Error()})
+		return
+	}
+
+	res, err := ctl.svc.ApproveApplication(&service.ApproveApplicationInput{
+		ApplicationID: appID,
+		OwnerID:       ownerID,
+		Reason:        req.Reason,
+	})
+	if err != nil {
+		handleError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, res)
+}
+
+// Reject godoc
+// @Summary     拒绝申请
+// @Description 发布方拒绝某个申请，并说明理由，悬赏令保持 Created 状态
+// @Tags        application
+// @Security    BearerAuth
+// @Accept      json
+// @Produce     json
+// @Param       application_id path     string          true  "申请 ID"
+// @Param       req            body     decisionRequest true  "拒绝理由"
+// @Success     200            {object} service.ApplicationDTO
+// @Failure     400            {object} ErrorResponse
+// @Failure     401            {object} ErrorResponse
+// @Failure     403            {object} ErrorResponse
+// @Failure     500            {object} ErrorResponse
+// @Router      /api/applications/{application_id}/reject [put]
+func (ctl *ApplicationController) Reject(c *gin.Context) {
+	raw, _ := c.Get("userID")
+	ownerID := raw.(uuid.UUID)
+
+	appID, err := uuid.Parse(c.Param("application_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "invalid application_id"})
+		return
+	}
+
+	var req decisionRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: err.Error()})
+		return
+	}
+
+	res, err := ctl.svc.RejectApplication(&service.RejectApplicationInput{
+		ApplicationID: appID,
+		OwnerID:       ownerID,
+		Reason:        req.Reason,
+	})
+	if err != nil {
+		handleError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, res)
+}
+
+// 错误统一处理（示例）
+func handleError(c *gin.Context, err error) {
+	switch err {
+	case repository.ErrNotApplicationOwner:
+		c.JSON(http.StatusForbidden, ErrorResponse{Error: err.Error()})
+	default:
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+	}
 }

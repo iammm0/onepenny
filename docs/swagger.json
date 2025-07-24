@@ -120,6 +120,146 @@
                 }
             }
         },
+        "/api/applications/{application_id}/approve": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "发布方批准某个申请，并说明理由，悬赏令进入进行中状态",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "application"
+                ],
+                "summary": "批准申请",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "申请 ID",
+                        "name": "application_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "批准理由",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/application.decisionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.ApplicationDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/application.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/application.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "无权限",
+                        "schema": {
+                            "$ref": "#/definitions/application.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/application.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/applications/{application_id}/reject": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "发布方拒绝某个申请，并说明理由，悬赏令保持 Created 状态",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "application"
+                ],
+                "summary": "拒绝申请",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "申请 ID",
+                        "name": "application_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "拒绝理由",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/application.decisionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.ApplicationDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/application.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/application.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/application.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/application.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/applications/{id}": {
             "get": {
                 "security": [
@@ -317,6 +457,122 @@
                     },
                     "500": {
                         "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/bounty.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/bounties/{bounty_id}/confirm-settlement": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "发布者对某个待结算悬赏令进行确认结算",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bounty"
+                ],
+                "summary": "确认结算",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "悬赏令 ID",
+                        "name": "bounty_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dao.Bounty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/bounty.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/bounty.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/bounty.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/bounty.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/bounties/{bounty_id}/request-settlement": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "接收者完成任务后，可向发布者发起结算请求",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bounty"
+                ],
+                "summary": "发起结算申请",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "悬赏令 ID",
+                        "name": "bounty_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dao.Bounty"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/bounty.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/bounty.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/bounty.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/bounty.ErrorResponse"
                         }
@@ -1755,6 +2011,478 @@
                 }
             }
         },
+        "/api/user/bounties/status": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "按状态分页获取当前用户发布的悬赏令列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "查看自己发布的悬赏令",
+                "parameters": [
+                    {
+                        "enum": [
+                            "Created",
+                            "Settling",
+                            "Settled",
+                            "Cancelled"
+                        ],
+                        "type": "string",
+                        "description": "状态",
+                        "name": "status",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/user.BountySummary"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/bounties/{bounty_id}/applications": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "分页获取当前用户发布的指定悬赏令所收到的申请",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "查看某个悬赏的申请列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "悬赏令 ID",
+                        "name": "bounty_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/user.ApplicationSummary"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/stats/applications/count": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "获取当前用户提交的所有悬赏申请数量",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "统计用户提交的申请总数",
+                "responses": {
+                    "200": {
+                        "description": "申请总数",
+                        "schema": {
+                            "$ref": "#/definitions/user.CountResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/stats/comments/count": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "获取当前用户发表的所有评论数量",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "统计用户发表的评论总数",
+                "responses": {
+                    "200": {
+                        "description": "评论总数",
+                        "schema": {
+                            "$ref": "#/definitions/user.CountResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/stats/completion-time": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "计算当前用户发布并已结算的悬赏的平均完成时长（秒）",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "平均完成时长",
+                "responses": {
+                    "200": {
+                        "description": "平均完成时长",
+                        "schema": {
+                            "$ref": "#/definitions/user.AvgCompletionTimeResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/stats/liked-bounties": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "分页获取当前用户点赞过的悬赏令",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "列出已点赞的悬赏",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/user.BountySummary"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/stats/tasks/by-category": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "分组统计当前用户发布的悬赏任务按 category 的数量",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "按类别统计任务数量",
+                "responses": {
+                    "200": {
+                        "description": "按类别统计结果",
+                        "schema": {
+                            "$ref": "#/definitions/user.TaskCountResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/stats/tasks/by-difficulty": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "分组统计当前用户发布的悬赏任务按 difficulty_level 的数量",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "按难度统计任务数量",
+                "responses": {
+                    "200": {
+                        "description": "按难度统计结果",
+                        "schema": {
+                            "$ref": "#/definitions/user.TaskCountResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/stats/total-earned": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "统计当前用户在所有已结算悬赏中的累计奖励金额",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "统计总赏金",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.TotalEarnedResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/stats/viewed-bounties": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "分页获取当前用户查看过的悬赏令",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "列出浏览过的悬赏",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "每页数量",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/user.BountySummary"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/user.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/users/login": {
             "post": {
                 "description": "使用用户名或邮箱 + 密码进行登录，成功返回 JWT",
@@ -2080,6 +2808,17 @@
                 }
             }
         },
+        "application.decisionRequest": {
+            "type": "object",
+            "required": [
+                "reason"
+            ],
+            "properties": {
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
         "attachment.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -2305,6 +3044,397 @@
                 }
             }
         },
+        "dao.Application": {
+            "type": "object",
+            "properties": {
+                "attachmentURLs": {
+                    "description": "附件 URL 列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "bounty": {
+                    "$ref": "#/definitions/dao.Bounty"
+                },
+                "bountyID": {
+                    "description": "关联赏金",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "proposal": {
+                    "description": "申请说明/方案",
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/dao.ApplicationStatus"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "description": "关联预加载",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dao.User"
+                        }
+                    ]
+                },
+                "userID": {
+                    "description": "申请人",
+                    "type": "string"
+                }
+            }
+        },
+        "dao.ApplicationStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "accepted",
+                "rejected"
+            ],
+            "x-enum-varnames": [
+                "ApplicationStatusPending",
+                "ApplicationStatusAccepted",
+                "ApplicationStatusRejected"
+            ]
+        },
+        "dao.Bounty": {
+            "type": "object",
+            "properties": {
+                "applications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Application"
+                    }
+                },
+                "attachments": {
+                    "description": "附件、位置与沟通",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "category": {
+                    "description": "如 “设计”、“文案”等",
+                    "type": "string"
+                },
+                "comments": {
+                    "description": "—— 关联 ——",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Comment"
+                    }
+                },
+                "communication": {
+                    "description": "e.g. \"email\", \"wechat\"",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "currency": {
+                    "description": "货币单位",
+                    "type": "string"
+                },
+                "deadline": {
+                    "description": "时间与分类",
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "likes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Like"
+                    }
+                },
+                "location": {
+                    "description": "\"remote\" 或线下地址",
+                    "type": "string"
+                },
+                "priority": {
+                    "description": "low, normal, high",
+                    "type": "string"
+                },
+                "receiverID": {
+                    "description": "谁接单，可空",
+                    "type": "string"
+                },
+                "reward": {
+                    "description": "报酬",
+                    "type": "number"
+                },
+                "status": {
+                    "description": "状态与优先级",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dao.BountyStatus"
+                        }
+                    ]
+                },
+                "tags": {
+                    "description": "关键词",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "description": "核心信息",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userID": {
+                    "description": "发布者与接单者",
+                    "type": "string"
+                }
+            }
+        },
+        "dao.BountyStatus": {
+            "type": "string",
+            "enum": [
+                "created",
+                "in_progress",
+                "completed",
+                "PendingSettlement",
+                "cancelled"
+            ],
+            "x-enum-varnames": [
+                "BountyStatusCreated",
+                "BountyStatusInProgress",
+                "BountyStatusCompleted",
+                "BountyStatusPendingSettlement",
+                "BountyStatusSettled"
+            ]
+        },
+        "dao.Comment": {
+            "type": "object",
+            "properties": {
+                "attachments": {
+                    "description": "—— 表情包 / 图片附件 ——",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "bounty": {
+                    "$ref": "#/definitions/dao.Bounty"
+                },
+                "bountyID": {
+                    "description": "所属赏金",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "—— 核心字段 ——",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "likes": {
+                    "description": "—— 点赞 ——",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Like"
+                    }
+                },
+                "parentID": {
+                    "description": "—— 回复功能 ——",
+                    "type": "string"
+                },
+                "replies": {
+                    "description": "子评论列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Comment"
+                    }
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "description": "—— 关联预加载 ——",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dao.User"
+                        }
+                    ]
+                },
+                "userID": {
+                    "description": "评论作者",
+                    "type": "string"
+                }
+            }
+        },
+        "dao.Like": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "likeableID": {
+                    "description": "多态目标：被点赞对象的 ID 和 类型",
+                    "type": "string"
+                },
+                "likeableType": {
+                    "description": "\"bounty\", \"comment\", \"user\" 等",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "description": "反向关联：点赞者",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dao.User"
+                        }
+                    ]
+                },
+                "userID": {
+                    "description": "谁点的赞",
+                    "type": "string"
+                }
+            }
+        },
+        "dao.User": {
+            "type": "object",
+            "properties": {
+                "accountStatus": {
+                    "description": "active, suspended, deleted",
+                    "type": "string"
+                },
+                "applications": {
+                    "description": "提交的申请",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Application"
+                    }
+                },
+                "bounties": {
+                    "description": "—— 关系 ——\n发布的赏金任务",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Bounty"
+                    }
+                },
+                "comments": {
+                    "description": "发布的评论",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Comment"
+                    }
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastLogin": {
+                    "description": "上次登录时间",
+                    "type": "string"
+                },
+                "lastPasswordChange": {
+                    "description": "上次修改密码时间",
+                    "type": "string"
+                },
+                "likes": {
+                    "description": "点过的赞",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dao.Like"
+                    }
+                },
+                "loginAttempts": {
+                    "description": "连续失败次数",
+                    "type": "integer"
+                },
+                "passwordHash": {
+                    "description": "存储经 bcrypt/scrypt/argon2 等算法 hash 后的密码",
+                    "type": "string"
+                },
+                "preferredLanguage": {
+                    "description": "界面语言",
+                    "type": "string"
+                },
+                "profilePicture": {
+                    "description": "头像 URL",
+                    "type": "string"
+                },
+                "timezone": {
+                    "description": "—— 可选偏好 ——",
+                    "type": "string"
+                },
+                "twoFactorEnabled": {
+                    "description": "—— 安全设置 ——",
+                    "type": "boolean"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "username": {
+                    "description": "—— 认证核心 ——",
+                    "type": "string"
+                },
+                "verified": {
+                    "description": "邮箱是否验证",
+                    "type": "boolean"
+                }
+            }
+        },
+        "gorm.DeletedAt": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
         "invitation.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -2476,6 +3606,41 @@
                 }
             }
         },
+        "service.ApplicationDTO": {
+            "type": "object",
+            "properties": {
+                "attachments": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "bounty_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "proposal": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "team.AddMemberRequest": {
             "type": "object",
             "required": [
@@ -2573,6 +3738,29 @@
                 }
             }
         },
+        "user.ApplicationSummary": {
+            "type": "object",
+            "properties": {
+                "bounty_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "proposal": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "user.AuthResponse": {
             "type": "object",
             "properties": {
@@ -2581,6 +3769,48 @@
                 },
                 "user": {
                     "$ref": "#/definitions/user.UserResponse"
+                }
+            }
+        },
+        "user.AvgCompletionTimeResponse": {
+            "type": "object",
+            "properties": {
+                "avg_completion_time_seconds": {
+                    "type": "number"
+                }
+            }
+        },
+        "user.BountySummary": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "reward": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.CountResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
                 }
             }
         },
@@ -2633,6 +3863,25 @@
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "user.TaskCountResponse": {
+            "type": "object",
+            "properties": {
+                "counts": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "user.TotalEarnedResponse": {
+            "type": "object",
+            "properties": {
+                "total_earned": {
+                    "type": "number"
                 }
             }
         },

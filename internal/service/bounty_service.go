@@ -20,6 +20,9 @@ type BountyService interface {
 	ListBounties(page, size int) ([]*dao.Bounty, error)
 	UpdateBounty(id uuid.UUID, input *UpdateBountyInput) (*dao.Bounty, error)
 	DeleteBounty(id uuid.UUID) error
+
+	RequestSettlement(bountyID, receiverID uuid.UUID) (*dao.Bounty, error)
+	ConfirmSettlement(bountyID, ownerID uuid.UUID) (*dao.Bounty, error)
 }
 
 type bountyService struct {
@@ -43,6 +46,8 @@ func (s *bountyService) CreateBounty(input *CreateBountyInput) (*dao.Bounty, err
 		Category:    input.Category,
 		Tags:        pq.StringArray(input.Tags),
 		Priority:    input.Priority,
+
+		Status: dao.BountyStatusCreated,
 	}
 
 	if err := s.repo.Create(b); err != nil {
@@ -138,4 +143,12 @@ type UpdateBountyInput struct {
 	Category    *string
 	Tags        *[]string
 	Priority    *string
+}
+
+func (s *bountyService) RequestSettlement(bountyID, receiverID uuid.UUID) (*dao.Bounty, error) {
+	return s.repo.RequestSettlement(bountyID, receiverID)
+}
+
+func (s *bountyService) ConfirmSettlement(bountyID, ownerID uuid.UUID) (*dao.Bounty, error) {
+	return s.repo.ConfirmSettlement(bountyID, ownerID)
 }

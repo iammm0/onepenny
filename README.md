@@ -44,8 +44,8 @@ OnePenny Server 是一个以 Go 为核心、Gin 框架驱动的后端 API 服务
 ### 克隆项目
 
 ```bash
-git clone https://github.com/iammm0/onepenny-server.git
-cd onepenny-server
+git clone https://github.com/iammm0/onepenny.git
+cd onepenny
 ```
 
 ## 配置

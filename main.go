@@ -72,6 +72,7 @@ func main() {
 	commentRepo := repository.NewCommentRepo(database.DB)
 	likeRepo := repository.NewLikeRepo(database.DB)
 	teamRepo := repository.NewTeamRepo(database.DB)
+	statsRepo := repository.NewUserStatsRepo(database.DB)
 
 	// 4. 构造 Service
 	userSvc := service.NewUserService(userRepo)
@@ -82,6 +83,7 @@ func main() {
 	commentSvc := service.NewCommentService(commentRepo)
 	likeSvc := service.NewLikeService(likeRepo)
 	teamSvc := service.NewTeamService(teamRepo)
+	statsSvc := service.NewUserStatsService(statsRepo)
 
 	// 5. 构造 Controller
 	authController := userCtrl.NewAuthController(userSvc)
@@ -93,6 +95,7 @@ func main() {
 	commentController := commentCtrl.NewCommentController(commentSvc)
 	likeController := likeCtrl.NewLikeController(likeSvc)
 	teamController := teamCtrl.NewTeamController(teamSvc)
+	statsController := userCtrl.NewUserStatsController(statsSvc)
 
 	attachmentController := attachmentCtrl.NewAttachmentController()
 
@@ -109,6 +112,7 @@ func main() {
 		likeController,
 		teamController,
 		attachmentController,
+		statsController,
 	)
 
 	// → 在最外层挂载 swagger
